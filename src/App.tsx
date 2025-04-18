@@ -16,6 +16,8 @@ import Profile from './pages/Profile';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import CookiePolicy from './pages/CookiePolicy';
+import About from './pages/About';
+import Settings from './pages/Settings';
 
 // Components
 import Navbar from './components/Navbar';
@@ -60,12 +62,20 @@ function App() {
                 <PageTransition>
                   <Routes>
                     <Route path="/" element={<Home />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/about/story" element={<About />} />
+                    <Route path="/about/team" element={<About />} />
+                    <Route path="/about/impact" element={<About />} />
+                    <Route path="/about/global" element={<About />} />
+                    <Route path="/about/innovation" element={<About />} />
+                    <Route path="/about/security" element={<About />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                     <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                     <Route path="/campaigns" element={<ProtectedRoute><Campaigns /></ProtectedRoute>} />
                     <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
+                    <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/terms-of-service" element={<TermsOfService />} />
                     <Route path="/cookie-policy" element={<CookiePolicy />} />

@@ -5,7 +5,8 @@ import {
   PaperAirplaneIcon, 
   ChatBubbleLeftRightIcon, 
   SparklesIcon,
-  MagnifyingGlassIcon
+  MagnifyingGlassIcon,
+  CheckCircleIcon
 } from '@heroicons/react/24/outline';
 
 type UserType = 'brand' | 'influencer' | null;
@@ -157,6 +158,9 @@ const ChatBot: React.FC = () => {
   const chatEndRef = useRef<HTMLDivElement>(null);
   const [isTyping, setIsTyping] = useState(false);
   const [authUser, setAuthUser] = useState<AuthUser>({ type: null, isAuthenticated: false });
+  const [isFirstQuery, setIsFirstQuery] = useState(true);
+  const [resolutionChecked, setResolutionChecked] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     const checkAuth = () => {
@@ -220,6 +224,9 @@ const ChatBot: React.FC = () => {
   const handleSearch = () => {
     if (!searchQuery.trim()) return;
 
+    setIsFirstQuery(true);
+    setResolutionChecked(false);
+    
     setChatMessages(prev => [
       ...prev,
       { text: `Searching for ${authUser.type === 'brand' ? 'influencers' : 'brands'} matching "${searchQuery}"...`, isUser: false }
@@ -235,6 +242,14 @@ const ChatBot: React.FC = () => {
       setChatMessages(prev => [...prev, { text: results, isUser: false }]);
       setIsTyping(false);
       setSearchQuery('');
+      
+      // Automatically ask if query was solved after first response
+      if (isFirstQuery) {
+        setTimeout(() => {
+          setChatMessages(prev => [...prev, { text: 'Did this solve your query?', isUser: false }]);
+          setResolutionChecked(true);
+        }, 1000);
+      }
     }, 1500);
   };
 
@@ -252,6 +267,8 @@ const ChatBot: React.FC = () => {
   const handleUserTypeSelection = (type: UserType) => {
     setUserType(type);
     setStatus('query-selection');
+    setIsFirstQuery(true);
+    setResolutionChecked(false);
     
     const welcomeMessage = type === 'brand' 
       ? 'Welcome, Brand Manager! How can I help you today?' 
@@ -262,7 +279,8 @@ const ChatBot: React.FC = () => {
 
   const handleQuerySelection = (query: QueryOption) => {
     setSelectedQuery(query);
-    setStatus('resolved');
+    setStatus('query-response');
+    setResolutionChecked(false);
     
     setIsTyping(true);
     
@@ -274,11 +292,13 @@ const ChatBot: React.FC = () => {
       ]);
       setIsTyping(false);
       
+      // Automatically ask if query was solved
       setTimeout(() => {
         setChatMessages(prev => [
           ...prev,
-          {text: 'Did that solve your query?', isUser: false}
+          {text: 'Did this solve your query?', isUser: false}
         ]);
+        setResolutionChecked(true);
       }, 1000);
     }, 1500);
   };
@@ -287,11 +307,22 @@ const ChatBot: React.FC = () => {
     if (resolved) {
       setChatMessages(prev => [
         ...prev,
-        {text: 'Yes, thank you!', isUser: true},
-        {text: 'Great! Is there anything else I can help you with?', isUser: false}
+        {text: 'Yes', isUser: true},
+        {text: 'Great! I\'m glad I could help 😊 Have a nice day!', isUser: false}
       ]);
-      setStatus('query-selection');
-      setSelectedQuery(null);
+      setShowSuccess(true);
+      
+      // Close chat after 3 seconds
+      setTimeout(() => {
+        setIsOpen(false);
+        setShowSuccess(false);
+        setStatus(authUser.isAuthenticated ? 'search' : 'initial');
+        setSelectedQuery(null);
+        setChatMessages([]);
+        setMessage('');
+        setSearchQuery('');
+        setIsFirstQuery(true);
+      }, 3000);
     } else {
       setChatMessages(prev => [
         ...prev,
@@ -299,6 +330,7 @@ const ChatBot: React.FC = () => {
         {text: 'I understand. Let me suggest some related queries that might help:', isUser: false}
       ]);
       setStatus('not-resolved');
+      setResolutionChecked(false);
     }
   };
 
@@ -314,6 +346,25 @@ const ChatBot: React.FC = () => {
   const handleSendMessage = () => {
     if (!message.trim()) return;
     
+    // Reset resolution check for new queries
+    setResolutionChecked(false);
+    
+    // Check if message is a resolution response
+    if (resolutionChecked) {
+      const normalizedMsg = message.trim().toLowerCase();
+      if (normalizedMsg === 'yes' || normalizedMsg === 'yeah' || normalizedMsg === 'yep' || normalizedMsg === 'y') {
+        setChatMessages(prev => [...prev, { text: message, isUser: true }]);
+        setMessage('');
+        handleQueryResolution(true);
+        return;
+      } else if (normalizedMsg === 'no' || normalizedMsg === 'nope' || normalizedMsg === 'n') {
+        setChatMessages(prev => [...prev, { text: message, isUser: true }]);
+        setMessage('');
+        handleQueryResolution(false);
+        return;
+      }
+    }
+    
     setChatMessages(prev => [
       ...prev,
       {text: message, isUser: true}
@@ -323,12 +374,19 @@ const ChatBot: React.FC = () => {
     setMessage('');
     
     setTimeout(() => {
-      setChatMessages(prev => [
-        ...prev,
-        {text: 'Thank you for your message. Our support team will contact you shortly to address your specific query. For faster assistance, please check your email for updates.', isUser: false}
-      ]);
+      const response = 'Thank you for your message. Our support team will contact you shortly to address your specific query. For faster assistance, please check your email for updates.';
+      setChatMessages(prev => [...prev, { text: response, isUser: false }]);
       setIsTyping(false);
-    }, 2000);
+      
+      // Automatically ask if query was solved after first response
+      if (isFirstQuery) {
+        setIsFirstQuery(false);
+        setTimeout(() => {
+          setChatMessages(prev => [...prev, { text: 'Did this solve your query?', isUser: false }]);
+          setResolutionChecked(true);
+        }, 1000);
+      }
+    }, 1500);
   };
 
   useEffect(() => {
@@ -490,6 +548,19 @@ const ChatBot: React.FC = () => {
                   <div ref={chatEndRef} className="h-1" />
                 </div>
               )}
+
+              {showSuccess && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-[1px] z-40">
+                  <div className={`bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg transform transition-all duration-300 scale-110 animate-pulse`}>
+                    <div className="flex flex-col items-center">
+                      <CheckCircleIcon className="h-10 w-10 text-green-500 mb-2" />
+                      <p className="text-center text-sm font-medium text-gray-800 dark:text-white">
+                        Chat session ending...
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className={`p-3 border-t ${theme === 'dark' ? 'border-gray-700 bg-gray-800/95' : 'border-gray-200 bg-white/95'}`}>
@@ -533,7 +604,7 @@ const ChatBot: React.FC = () => {
                 </div>
               )}
 
-              {status === 'resolved' && (
+              {status === 'query-response' && resolutionChecked && (
                 <div className="space-y-2">
                   <p className={`text-xs font-medium mb-1.5 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
                     Was your query resolved?
@@ -543,13 +614,13 @@ const ChatBot: React.FC = () => {
                       onClick={() => handleQueryResolution(true)}
                       className="px-3 py-1.5 text-xs rounded-lg bg-green-500 text-white hover:bg-green-600 flex-1 transition-all duration-200 hover:shadow-sm active:transform active:scale-98"
                     >
-                      Yes, thank you!
+                      Yes
                     </button>
                     <button
                       onClick={() => handleQueryResolution(false)}
                       className="px-3 py-1.5 text-xs rounded-lg bg-gray-500 text-white hover:bg-gray-600 flex-1 transition-all duration-200 hover:shadow-sm active:transform active:scale-98"
                     >
-                      No, I need more help
+                      No
                     </button>
                   </div>
                 </div>
@@ -590,7 +661,7 @@ const ChatBot: React.FC = () => {
                 </div>
               )}
 
-              {status === 'chat' && (
+              {status === 'chat' && !resolutionChecked && (
                 <div className="flex items-center space-x-1.5">
                   <input
                     type="text"
@@ -598,6 +669,33 @@ const ChatBot: React.FC = () => {
                     onChange={(e) => setMessage(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                     placeholder="Type your message here..."
+                    className={`flex-1 px-3 py-1.5 rounded-lg text-xs ${
+                      theme === 'dark'
+                        ? 'bg-gray-700/80 border-gray-600/50 text-white placeholder:text-gray-400'
+                        : 'bg-gray-100/80 border-gray-300/50 text-gray-800 placeholder:text-gray-500'
+                    } focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all duration-200`}
+                  />
+                  <button
+                    onClick={handleSendMessage}
+                    disabled={!message.trim()}
+                    className={`p-1.5 rounded-lg transition-all duration-200 hover:shadow-sm transform hover:scale-105
+                      ${!message.trim() 
+                        ? 'bg-gray-400/80 cursor-not-allowed' 
+                        : 'bg-primary-600/90 hover:bg-primary-700/90'} text-white`}
+                  >
+                    <PaperAirplaneIcon className="h-4 w-4" />
+                  </button>
+                </div>
+              )}
+
+              {resolutionChecked && status !== 'query-response' && (
+                <div className="flex items-center space-x-1.5">
+                  <input
+                    type="text"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                    placeholder="Type 'yes' or 'no' to continue..."
                     className={`flex-1 px-3 py-1.5 rounded-lg text-xs ${
                       theme === 'dark'
                         ? 'bg-gray-700/80 border-gray-600/50 text-white placeholder:text-gray-400'

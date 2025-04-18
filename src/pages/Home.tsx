@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   SparklesIcon, 
@@ -10,13 +10,15 @@ import {
   ArrowRightIcon,
   BoltIcon,
   UserGroupIcon,
-  LockClosedIcon
+  LockClosedIcon,
+  MagnifyingGlassIcon
 } from '@heroicons/react/24/outline';
 
 import FloatingIcons from '../components/FloatingIcons';
 import FeatureCard from '../components/FeatureCard';
 import TestimonialCard from '../components/TestimonialCard';
 import RotatingText from '../components/RotatingText';
+import RotatingSearchBar from '../components/RotatingSearchBar';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -24,7 +26,8 @@ export default function Home() {
   const { theme } = useTheme();
   const timelineRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [time, setTime] = useState(new Date());
-  const { login, logout, isAuthenticated, userType } = useAuth();
+  const { login, logout, isAuthenticated, userType, user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -63,8 +66,8 @@ export default function Home() {
       icon: <SparklesIcon className="h-6 w-6" />,
     },
     {
-      title: 'Direct DM Communication',
-      description: 'Communicate seamlessly with brands and influencers through our secure, integrated messaging system.',
+      title: 'Direct Message Communication',
+      description: 'Connect directly with brands or influencers - no middlemen, no waiting.',
       icon: <ChatBubbleLeftRightIcon className="h-6 w-6" />,
     },
     {
@@ -141,6 +144,14 @@ export default function Home() {
     login("influencer@example.com", "password123");
   };
 
+  const handleSignUpAsBrand = () => {
+    navigate('/register?role=brand');
+  };
+
+  const handleSignUpAsInfluencer = () => {
+    navigate('/register?role=influencer');
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Hero Section with enhanced light theme gradients */}
@@ -162,19 +173,27 @@ export default function Home() {
           >
             <RotatingText />
             
-            <div className="mt-8 mb-8 flex flex-col items-center gap-6 sm:flex-row sm:justify-center">
-              <Link 
-                to="/register?role=brand" 
-                className="rounded-lg bg-gradient-to-r from-primary-600 to-blue-600 px-7 py-3.5 text-base font-medium text-white shadow-lg hover:from-primary-700 hover:to-blue-700 hover:shadow-xl transform hover:scale-105 hover:-translate-y-1 active:scale-95 active:translate-y-0 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
-              >
-                Sign Up as a Brand
-              </Link>
-              <Link 
-                to="/register?role=influencer" 
-                className="rounded-lg bg-white dark:bg-slate-800 px-7 py-3.5 text-base font-medium text-gray-800 dark:text-white shadow-lg border border-gray-300 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 hover:shadow-xl transform hover:scale-105 hover:-translate-y-1 active:scale-95 active:translate-y-0 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
-              >
-                Find Campaigns as an Influencer
-              </Link>
+            <div className="mt-8 mb-8 flex flex-col items-center gap-6">
+              {user ? (
+                <div className="w-full max-w-3xl mx-auto px-4">
+                  <RotatingSearchBar userRole={user.role as 'brand' | 'influencer'} />
+                </div>
+              ) : (
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-2xl mx-auto justify-center">
+                  <button
+                    onClick={handleSignUpAsBrand}
+                    className="px-8 py-3.5 bg-gradient-to-r from-primary-600 to-blue-600 text-white rounded-full shadow-lg hover:from-primary-700 hover:to-blue-700 transform hover:scale-105 hover:-translate-y-0.5 active:scale-95 transition-all duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                  >
+                    Sign Up as a Brand
+                  </button>
+                  <button
+                    onClick={handleSignUpAsInfluencer}
+                    className="px-8 py-3.5 bg-white dark:bg-gray-800 text-primary-600 dark:text-primary-400 border-2 border-primary-600 dark:border-primary-400 rounded-full shadow-lg hover:bg-primary-50 dark:hover:bg-gray-700 transform hover:scale-105 hover:-translate-y-0.5 active:scale-95 transition-all duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                  >
+                    Find Campaigns as an Influencer
+                  </button>
+                </div>
+              )}
             </div>
           </motion.div>
         </div>
@@ -541,8 +560,16 @@ export default function Home() {
 
       {/* CTA Section */}
       <section className="relative">
-        <div className="overflow-hidden rounded-2xl mx-6 sm:mx-10 lg:mx-20 my-16 bg-gradient-to-br from-white to-indigo-50 dark:from-gray-900 dark:to-gray-800">
-          <div className="relative overflow-hidden bg-primary-700 dark:bg-primary-900 px-6 py-16 sm:px-10 sm:py-24 lg:py-32">
+        <div className={`overflow-hidden rounded-2xl mx-6 sm:mx-10 lg:mx-20 my-16 ${
+          theme === 'dark' 
+            ? 'bg-gradient-to-br from-slate-800 to-slate-900'
+            : 'bg-gradient-to-br from-white to-indigo-50'
+        }`}>
+          <div className={`relative overflow-hidden ${
+            theme === 'dark' 
+              ? 'bg-primary-800' 
+              : 'bg-primary-700'
+            } px-6 py-16 sm:px-10 sm:py-24 lg:py-32`}>
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <div className="h-[40rem] w-[40rem] animate-gradient-xy rounded-full bg-gradient-to-br from-primary-500/30 to-primary-800/30 opacity-30 blur-3xl"></div>
             </div>
@@ -561,11 +588,12 @@ export default function Home() {
                   Connect with the perfect partners, streamline your campaigns, and maximize your ROI with our AI-powered platform.
                 </p>
                 <div className="mt-10 flex items-center justify-center gap-x-6">
-                  <Link to="/register" className="rounded-lg bg-white px-6 py-3 text-base font-semibold text-primary-700 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white">
+                  <Link to="/register" className="rounded-full bg-white px-7 py-3.5 text-base font-semibold text-primary-700 shadow-sm hover:bg-gray-100 hover:scale-105 transform transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white">
                     Get Started For Free
                   </Link>
-                  <Link to="/about" className="text-base font-semibold text-white flex items-center">
-                    Learn more <ArrowRightIcon className="ml-2 h-4 w-4" />
+                  <Link to="/about" className="text-base font-semibold text-white flex items-center group transition-all duration-300 hover:scale-105">
+                    Learn more 
+                    <ArrowRightIcon className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
                   </Link>
                 </div>
               </motion.div>
@@ -575,43 +603,57 @@ export default function Home() {
       </section>
 
       {/* Digital Footer Section */}
-      <footer className="relative bg-gradient-to-b from-[#1e293b] to-[#0f172a] text-white overflow-hidden py-8">
+      <footer className={`relative overflow-hidden py-12 ${
+        theme === 'dark' 
+        ? 'bg-gradient-to-b from-slate-800 to-slate-900 text-white' 
+        : 'bg-gradient-to-b from-gray-50 to-gray-100 text-gray-800 shadow-md'
+      }`}>
         {/* Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
+          {theme === 'dark' ? (
+            <>
+              <div className="absolute left-[5%] top-[20%] h-[200px] w-[200px] rounded-full bg-blue-500/10 blur-3xl"></div>
+              <div className="absolute right-[10%] bottom-[20%] h-[300px] w-[300px] rounded-full bg-purple-500/10 blur-3xl"></div>
+              <div className="absolute left-[40%] bottom-[10%] h-[250px] w-[250px] rounded-full bg-indigo-500/10 blur-3xl"></div>
+            </>
+          ) : (
+            <>
           <div className="absolute left-[5%] top-[20%] h-[200px] w-[200px] rounded-full bg-blue-500/5 blur-3xl"></div>
           <div className="absolute right-[10%] bottom-[20%] h-[300px] w-[300px] rounded-full bg-purple-500/5 blur-3xl"></div>
           <div className="absolute left-[40%] bottom-[10%] h-[250px] w-[250px] rounded-full bg-indigo-500/5 blur-3xl"></div>
+            </>
+          )}
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
           {/* Footer grid with logo, links and newsletter */}
-          <div className="grid grid-cols-1 gap-8 py-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-12 py-8 sm:grid-cols-2 lg:grid-cols-4">
             {/* Logo and Social Links */}
-            <div className="space-y-4">
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent hover:from-blue-300 hover:to-indigo-300 transition-all duration-300">
+            <div className="space-y-6">
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent hover:from-blue-400 hover:to-indigo-400 transition-all duration-300 transform hover:scale-105">
                 adgorithm
               </h3>
-              <p className="text-sm text-gray-400">
+              <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
                 Connecting brands with the perfect influencers through AI-powered matching.
               </p>
-              <div className="flex space-x-4">
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-red-500 transition-colors transform hover:scale-110 transition-transform duration-200">
-                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <div className="flex space-x-5">
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className={`${theme === 'dark' ? 'text-gray-400 hover:text-red-400' : 'text-gray-500 hover:text-red-600'} transition-all duration-300 transform hover:scale-125`}>
+                  <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                   </svg>
                 </a>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-purple-600 transition-colors transform hover:scale-110 transition-transform duration-200">
-                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className={`${theme === 'dark' ? 'text-gray-400 hover:text-pink-400' : 'text-gray-500 hover:text-pink-600'} transition-all duration-300 transform hover:scale-125`}>
+                  <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
                   </svg>
                 </a>
-                <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors transform hover:scale-110 transition-transform duration-200">
-                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <a href="https://x.com" target="_blank" rel="noopener noreferrer" className={`${theme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'} transition-all duration-300 transform hover:scale-125`}>
+                  <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                   </svg>
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-600 transition-colors transform hover:scale-110 transition-transform duration-200">
-                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className={`${theme === 'dark' ? 'text-gray-400 hover:text-blue-400' : 'text-gray-500 hover:text-blue-600'} transition-all duration-300 transform hover:scale-125`}>
+                  <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                   </svg>
                 </a>
@@ -620,39 +662,71 @@ export default function Home() {
 
             {/* Quick Links */}
             <div>
-              <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">Solutions</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-sm text-gray-400 hover:text-blue-400 hover:translate-x-1 transition-all duration-200 inline-block">Marketing</a></li>
-                <li><a href="#" className="text-sm text-gray-400 hover:text-blue-400 hover:translate-x-1 transition-all duration-200 inline-block">Analytics</a></li>
-                <li><a href="#" className="text-sm text-gray-400 hover:text-blue-400 hover:translate-x-1 transition-all duration-200 inline-block">Commerce</a></li>
-                <li><a href="#" className="text-sm text-gray-400 hover:text-blue-400 hover:translate-x-1 transition-all duration-200 inline-block">Insights</a></li>
+              <h3 className={`text-sm font-semibold ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'} uppercase tracking-wider mb-5`}>Solutions</h3>
+              <ul className="space-y-3">
+                <li><a href="#" className={`text-sm ${theme === 'dark' ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} hover:translate-x-1.5 transition-all duration-300 inline-flex items-center group`}>
+                  <span className="relative">Marketing
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
+                  </span>
+                </a></li>
+                <li><a href="#" className={`text-sm ${theme === 'dark' ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} hover:translate-x-1.5 transition-all duration-300 inline-flex items-center group`}>
+                  <span className="relative">Analytics
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
+                  </span>
+                </a></li>
+                <li><a href="#" className={`text-sm ${theme === 'dark' ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} hover:translate-x-1.5 transition-all duration-300 inline-flex items-center group`}>
+                  <span className="relative">Commerce
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
+                  </span>
+                </a></li>
+                <li><a href="#" className={`text-sm ${theme === 'dark' ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} hover:translate-x-1.5 transition-all duration-300 inline-flex items-center group`}>
+                  <span className="relative">Insights
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
+                  </span>
+                </a></li>
               </ul>
             </div>
 
             {/* Support */}
             <div>
-              <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">Support</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-sm text-gray-400 hover:text-blue-400 hover:translate-x-1 transition-all duration-200 inline-block">Documentation</a></li>
-                <li><a href="#" className="text-sm text-gray-400 hover:text-blue-400 hover:translate-x-1 transition-all duration-200 inline-block">Guides</a></li>
-                <li><a href="#" className="text-sm text-gray-400 hover:text-blue-400 hover:translate-x-1 transition-all duration-200 inline-block">API Status</a></li>
+              <h3 className={`text-sm font-semibold ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'} uppercase tracking-wider mb-5`}>Support</h3>
+              <ul className="space-y-3">
+                <li><a href="#" className={`text-sm ${theme === 'dark' ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} hover:translate-x-1.5 transition-all duration-300 inline-flex items-center group`}>
+                  <span className="relative">Documentation
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
+                  </span>
+                </a></li>
+                <li><a href="#" className={`text-sm ${theme === 'dark' ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} hover:translate-x-1.5 transition-all duration-300 inline-flex items-center group`}>
+                  <span className="relative">Guides
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
+                  </span>
+                </a></li>
+                <li><a href="#" className={`text-sm ${theme === 'dark' ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} hover:translate-x-1.5 transition-all duration-300 inline-flex items-center group`}>
+                  <span className="relative">API Status
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
+                  </span>
+                </a></li>
               </ul>
             </div>
 
             {/* Newsletter */}
             <div>
-              <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">Stay Updated</h3>
-              <p className="text-sm text-gray-400 mb-4">Subscribe to our newsletter for the latest updates.</p>
+              <h3 className={`text-sm font-semibold ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'} uppercase tracking-wider mb-5`}>Stay Updated</h3>
+              <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-4`}>Subscribe to our newsletter for the latest updates.</p>
               <form className="space-y-2">
                 <div className="flex">
                   <input
                     type="email"
                     placeholder="Enter your email"
-                    className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-l-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm text-gray-300"
+                    className={`flex-1 px-4 py-3 ${
+                      theme === 'dark' 
+                        ? 'bg-gray-800 border-gray-700 text-gray-200' 
+                        : 'bg-white border-gray-300 text-gray-800'
+                      } border rounded-l-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm transition-all duration-300`}
                   />
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-r-md hover:bg-blue-700 transition-colors text-sm font-medium hover:scale-105 transform transition-transform duration-200"
+                    className="px-5 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-r-full hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 text-sm font-medium hover:scale-105 transform"
                   >
                     Subscribe
                   </button>
@@ -662,15 +736,24 @@ export default function Home() {
           </div>
 
           {/* Bottom Bar */}
-          <div className="border-t border-gray-800 pt-6">
+          <div className={`border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'} pt-8`}>
             <div className="flex flex-col md:flex-row justify-between items-center">
-              <div className="text-sm text-gray-400 mb-4 md:mb-0">
+              <div className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} mb-5 md:mb-0`}>
                 © 2025 adgorithm. All rights reserved.
               </div>
-              <div className="flex space-x-6">
-                <Link to="/privacy-policy" className="text-sm text-gray-400 hover:text-blue-400 transition-colors hover:underline">Privacy Policy</Link>
-                <Link to="/terms-of-service" className="text-sm text-gray-400 hover:text-blue-400 transition-colors hover:underline">Terms of Service</Link>
-                <Link to="/cookie-policy" className="text-sm text-gray-400 hover:text-blue-400 transition-colors hover:underline">Cookie Policy</Link>
+              <div className="flex space-x-8">
+                <Link to="/privacy-policy" className={`text-sm ${theme === 'dark' ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} transition-all duration-300 relative group`}>
+                  <span>Privacy Policy</span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
+                </Link>
+                <Link to="/terms-of-service" className={`text-sm ${theme === 'dark' ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} transition-all duration-300 relative group`}>
+                  <span>Terms of Service</span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
+                </Link>
+                <Link to="/cookie-policy" className={`text-sm ${theme === 'dark' ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} transition-all duration-300 relative group`}>
+                  <span>Cookie Policy</span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
+                </Link>
               </div>
             </div>
           </div>
@@ -690,7 +773,7 @@ export default function Home() {
       `}</style>
     </div>
   );
-}
+} 
 
 const TestButtons = () => {
   const { login, logout, isAuthenticated, userType } = useAuth();
