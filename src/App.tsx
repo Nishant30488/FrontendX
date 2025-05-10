@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './contexts/AuthContext';
-import { ThemeProvider } from './contexts/ThemeContext';
 import { useEffect } from 'react';
 
 // Pages
@@ -18,6 +17,7 @@ import TermsOfService from './pages/TermsOfService';
 import CookiePolicy from './pages/CookiePolicy';
 import About from './pages/About';
 import Settings from './pages/Settings';
+import Policies from './pages/Policies';
 
 // Components
 import Navbar from './components/Navbar';
@@ -53,46 +53,39 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
-        <ThemeProvider>
-          <AuthProvider>
-            <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-              <ScrollToTop />
-              <Navbar />
-              <main className="flex-grow container mx-auto px-4 pt-4 animate-fade-in">
-                <PageTransition>
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/about/story" element={<About />} />
-                    <Route path="/about/team" element={<About />} />
-                    <Route path="/about/impact" element={<About />} />
-                    <Route path="/about/global" element={<About />} />
-                    <Route path="/about/innovation" element={<About />} />
-                    <Route path="/about/security" element={<About />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-                    <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                    <Route path="/campaigns" element={<ProtectedRoute><Campaigns /></ProtectedRoute>} />
-                    <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
-                    <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                    <Route path="/terms-of-service" element={<TermsOfService />} />
-                    <Route path="/cookie-policy" element={<CookiePolicy />} />
-                  </Routes>
-                </PageTransition>
-              </main>
-              <ChatBot />
-              <Toaster 
-                position="bottom-right" 
-                toastOptions={{
-                  className: 'toast-animation',
-                  duration: 3000,
-                }}
-              />
-            </div>
-          </AuthProvider>
-        </ThemeProvider>
+        <AuthProvider>
+          <div className="flex flex-col min-h-screen bg-gray-50">
+            <ScrollToTop />
+            <Navbar />
+            <main className="flex-grow container mx-auto px-4 pt-4 animate-fade-in">
+              <PageTransition>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/about/story" element={<About />} />
+                  <Route path="/about/team" element={<About />} />
+                  <Route path="/about/impact" element={<About />} />
+                  <Route path="/about/global" element={<About />} />
+                  <Route path="/about/innovation" element={<About />} />
+                  <Route path="/about/security" element={<About />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                  <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                  <Route path="/campaigns" element={<ProtectedRoute><Campaigns /></ProtectedRoute>} />
+                  <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
+                  <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/terms-of-service" element={<TermsOfService />} />
+                  <Route path="/cookie-policy" element={<CookiePolicy />} />
+                  <Route path="/policies" element={<Policies />} />
+                </Routes>
+              </PageTransition>
+            </main>
+            <ChatBot />
+            <Toaster />
+          </div>
+        </AuthProvider>
       </Router>
     </QueryClientProvider>
   );

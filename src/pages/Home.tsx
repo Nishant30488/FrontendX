@@ -153,13 +153,13 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-gitlab-gradient text-foreground">
       {/* Hero Section with enhanced light theme gradients */}
-      <section className="relative overflow-hidden bg-white dark:bg-gray-900 bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
-        <div className="absolute inset-0 bg-grid-gray-100/50 dark:bg-grid-gray-800/20 bg-bottom [mask-image:linear-gradient(to_bottom,transparent,50%,white)]"></div>
+      <section className="relative overflow-hidden bg-white bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <div className="absolute inset-0 bg-grid-gray-100/50 bg-bottom [mask-image:linear-gradient(to_bottom,transparent,50%,white)]"></div>
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -right-20 top-0 h-[500px] w-[500px] rounded-full bg-gradient-to-b from-indigo-100 to-purple-100 opacity-30 blur-3xl dark:from-indigo-900/40 dark:to-purple-900/40"></div>
-          <div className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-gradient-to-t from-blue-100 to-cyan-100 opacity-30 blur-3xl dark:from-blue-900/40 dark:to-cyan-900/40"></div>
+          <div className="absolute -right-20 top-0 h-[500px] w-[500px] rounded-full bg-gradient-to-b from-indigo-100 to-purple-100 opacity-30 blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-gradient-to-t from-blue-100 to-cyan-100 opacity-30 blur-3xl"></div>
         </div>
         
         <FloatingIcons className="z-0" />
@@ -188,7 +188,7 @@ export default function Home() {
                   </button>
                   <button
                     onClick={handleSignUpAsInfluencer}
-                    className="px-8 py-3.5 bg-white dark:bg-gray-800 text-primary-600 dark:text-primary-400 border-2 border-primary-600 dark:border-primary-400 rounded-full shadow-lg hover:bg-primary-50 dark:hover:bg-gray-700 transform hover:scale-105 hover:-translate-y-0.5 active:scale-95 transition-all duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                    className="px-8 py-3.5 bg-white text-primary-600 border-2 border-primary-600 rounded-full shadow-lg hover:bg-primary-50 transform hover:scale-105 hover:-translate-y-0.5 active:scale-95 transition-all duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                   >
                     Find Campaigns as an Influencer
                   </button>
@@ -200,7 +200,7 @@ export default function Home() {
       </section>
 
       {/* Features Section with enhanced gradients */}
-      <section className="py-8 sm:py-12 bg-gradient-to-br from-white via-gray-50 to-blue-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900" id="features">
+      <section className="py-8 sm:py-12 bg-gradient-to-br from-white via-gray-50 to-blue-50" id="features">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <motion.div
@@ -210,9 +210,9 @@ export default function Home() {
               viewport={{ once: true, margin: '-100px' }}
               className="relative"
             >
-              <p className="text-lg font-semibold leading-8 tracking-tight text-primary-600 dark:text-primary-400">Features</p>
-              <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">Everything You Need In One Platform</h2>
-              <p className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-400">
+              <p className="text-lg font-semibold leading-8 tracking-tight text-primary-600">Features</p>
+              <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Everything You Need In One Platform</h2>
+              <p className="mt-4 text-lg leading-8 text-gray-700">
                 Our comprehensive suite of tools streamlines the entire influencer marketing process from discovery to analytics.
               </p>
             </motion.div>
@@ -233,22 +233,22 @@ export default function Home() {
       </section>
 
       {/* How it Works section */}
-      <section className="relative py-8 sm:py-12 bg-gradient-to-br from-gray-50 via-white to-rose-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800" id="how-it-works">
+      <section className="relative py-8 sm:py-12 bg-black" id="how-it-works">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute right-1/4 top-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-pink-100 to-rose-100 opacity-20 blur-3xl dark:from-pink-900/30 dark:to-rose-900/30"></div>
-          <div className="absolute left-1/4 bottom-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-violet-100 to-indigo-100 opacity-20 blur-3xl dark:from-violet-900/30 dark:to-indigo-900/30"></div>
+          <div className="absolute right-1/4 top-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-blue-900/20 to-purple-900/20 opacity-20 blur-3xl"></div>
+          <div className="absolute left-1/4 bottom-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-indigo-900/20 to-violet-900/20 opacity-20 blur-3xl"></div>
         </div>
 
         <div className="relative w-full">
           <div className="mx-auto max-w-7xl px-6 lg:px-8 py-2">
             <div className="mx-auto max-w-2xl text-center mb-2">
-              <h2 className="text-xl font-bold uppercase tracking-wide text-blue-600 dark:text-blue-500">
+              <h2 className="text-xl font-bold uppercase tracking-wide text-blue-400">
                 HOW IT WORKS
               </h2>
-              <p className="mt-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">
+              <p className="mt-1 text-2xl font-bold tracking-tight text-white sm:text-3xl">
                 Simple, transparent process
               </p>
-              <p className="mt-1 max-w-prose mx-auto text-sm text-gray-700 dark:text-gray-300 font-medium">
+              <p className="mt-1 max-w-prose mx-auto text-sm text-gray-300 font-medium">
                 Get started in minutes and connect with the perfect partners for your brand or audience.
               </p>
             </div>
@@ -264,15 +264,15 @@ export default function Home() {
                 style={{ 
                   background: `linear-gradient(135deg, ${
                     index % 2 === 0 
-                      ? 'rgba(30, 58, 138, 0.8) 0%, rgba(37, 99, 235, 0.5) 100%' 
-                      : 'rgba(67, 56, 202, 0.8) 0%, rgba(124, 58, 237, 0.5) 100%'
+                      ? 'rgba(17, 24, 39, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%' 
+                      : 'rgba(30, 41, 59, 0.95) 0%, rgba(17, 24, 39, 0.95) 100%'
                   })` 
                 }}
               >
                 {/* Background blurred elements */}
                 <div className="absolute inset-0 overflow-hidden">
-                  <div className="absolute left-[20%] top-[30%] h-[300px] w-[300px] rounded-full bg-blue-500/10 blur-3xl"></div>
-                  <div className="absolute right-[10%] bottom-[20%] h-[200px] w-[200px] rounded-full bg-purple-500/10 blur-3xl"></div>
+                  <div className="absolute left-[20%] top-[30%] h-[300px] w-[300px] rounded-full bg-blue-900/10 blur-3xl"></div>
+                  <div className="absolute right-[10%] bottom-[20%] h-[200px] w-[200px] rounded-full bg-purple-900/10 blur-3xl"></div>
                 </div>
                 
                 <div className="relative max-w-7xl w-full px-6 lg:px-8 py-6 flex flex-col md:flex-row items-center justify-between">
@@ -283,7 +283,7 @@ export default function Home() {
                       <div className="relative">
                         {/* Timeline line */}
                         {index < steps.length - 1 && (
-                          <div className="timeline-line absolute top-10 left-[15px] w-[2px] h-[65vh]"></div>
+                          <div className="timeline-line absolute top-10 left-[15px] w-[2px] h-[65vh] bg-gradient-to-b from-blue-500/50 to-purple-500/50"></div>
                         )}
                         
                         {/* Step circle */}
@@ -382,8 +382,10 @@ export default function Home() {
                   
                   {/* Right side image */}
                   <div className="w-full md:w-1/2 flex justify-center">
-                    <div className="relative w-full max-w-md p-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden group">
-                      <div className="aspect-[4/3] bg-gradient-to-br from-blue-900/40 to-indigo-900/40 rounded-lg overflow-hidden p-4 flex items-center justify-center">
+                    <div className="relative w-full max-w-md p-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden group hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
+                      <div className="aspect-[4/3] bg-gradient-to-br from-gray-900/90 to-gray-800/90 rounded-lg overflow-hidden p-4 flex items-center justify-center relative group-hover:scale-[1.02] transition-transform duration-300">
                         {index === 0 && (
                           <div className="text-center">
                             <div className="bg-blue-600/20 p-4 rounded-full w-24 h-24 mx-auto mb-3 flex items-center justify-center">
@@ -506,7 +508,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-8 sm:py-12 bg-gradient-to-br from-white via-gray-50 to-purple-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900" id="testimonials">
+      <section className="py-8 sm:py-12 bg-gradient-to-br from-white via-gray-50 to-purple-50" id="testimonials">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <motion.div
@@ -515,8 +517,8 @@ export default function Home() {
               transition={{ duration: 0.7 }}
               viewport={{ once: true, margin: '-100px' }}
             >
-              <p className="text-lg font-semibold leading-8 tracking-tight text-primary-600 dark:text-primary-400">Testimonials</p>
-              <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">Trusted by Brands and Influencers</h2>
+              <p className="text-lg font-semibold leading-8 tracking-tight text-primary-600">Testimonials</p>
+              <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Trusted by Brands and Influencers</h2>
             </motion.div>
           </div>
 
@@ -535,7 +537,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-6 sm:py-8 bg-gradient-to-br from-white via-gray-50 to-cyan-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">
+      <section className="py-6 sm:py-8 bg-gradient-to-br from-white via-gray-50 to-cyan-50">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             <div className="flex flex-col items-center justify-center">
@@ -563,15 +565,15 @@ export default function Home() {
         <div className={`overflow-hidden rounded-2xl mx-6 sm:mx-10 lg:mx-20 my-16 ${
           theme === 'dark' 
             ? 'bg-gradient-to-br from-slate-800 to-slate-900'
-            : 'bg-gradient-to-br from-white to-indigo-50'
+            : 'bg-gradient-to-br from-white to-primary-50'
         }`}>
           <div className={`relative overflow-hidden ${
             theme === 'dark' 
               ? 'bg-primary-800' 
-              : 'bg-primary-700'
+              : 'bg-primary-500'
             } px-6 py-16 sm:px-10 sm:py-24 lg:py-32`}>
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <div className="h-[40rem] w-[40rem] animate-gradient-xy rounded-full bg-gradient-to-br from-primary-500/30 to-primary-800/30 opacity-30 blur-3xl"></div>
+              <div className="h-[40rem] w-[40rem] animate-gradient-xy rounded-full bg-gradient-to-br from-primary-400/30 to-primary-600/30 opacity-30 blur-3xl"></div>
             </div>
             
             <div className="relative mx-auto max-w-2xl text-center">
@@ -606,21 +608,21 @@ export default function Home() {
       <footer className={`relative overflow-hidden py-12 ${
         theme === 'dark' 
         ? 'bg-gradient-to-b from-slate-800 to-slate-900 text-white' 
-        : 'bg-gradient-to-b from-gray-50 to-gray-100 text-gray-800 shadow-md'
+        : 'bg-gradient-to-b from-primary-50 to-white text-gray-800 shadow-md'
       }`}>
         {/* Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
           {theme === 'dark' ? (
             <>
-              <div className="absolute left-[5%] top-[20%] h-[200px] w-[200px] rounded-full bg-blue-500/10 blur-3xl"></div>
-              <div className="absolute right-[10%] bottom-[20%] h-[300px] w-[300px] rounded-full bg-purple-500/10 blur-3xl"></div>
-              <div className="absolute left-[40%] bottom-[10%] h-[250px] w-[250px] rounded-full bg-indigo-500/10 blur-3xl"></div>
+              <div className="absolute left-[5%] top-[20%] h-[200px] w-[200px] rounded-full bg-primary-500/10 blur-3xl"></div>
+              <div className="absolute right-[10%] bottom-[20%] h-[300px] w-[300px] rounded-full bg-primary-400/10 blur-3xl"></div>
+              <div className="absolute left-[40%] bottom-[10%] h-[250px] w-[250px] rounded-full bg-primary-300/10 blur-3xl"></div>
             </>
           ) : (
             <>
-          <div className="absolute left-[5%] top-[20%] h-[200px] w-[200px] rounded-full bg-blue-500/5 blur-3xl"></div>
-          <div className="absolute right-[10%] bottom-[20%] h-[300px] w-[300px] rounded-full bg-purple-500/5 blur-3xl"></div>
-          <div className="absolute left-[40%] bottom-[10%] h-[250px] w-[250px] rounded-full bg-indigo-500/5 blur-3xl"></div>
+              <div className="absolute left-[5%] top-[20%] h-[200px] w-[200px] rounded-full bg-primary-400/5 blur-3xl"></div>
+              <div className="absolute right-[10%] bottom-[20%] h-[300px] w-[300px] rounded-full bg-primary-300/5 blur-3xl"></div>
+              <div className="absolute left-[40%] bottom-[10%] h-[250px] w-[250px] rounded-full bg-primary-200/5 blur-3xl"></div>
             </>
           )}
         </div>
@@ -714,19 +716,16 @@ export default function Home() {
               <h3 className={`text-sm font-semibold ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'} uppercase tracking-wider mb-5`}>Stay Updated</h3>
               <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-4`}>Subscribe to our newsletter for the latest updates.</p>
               <form className="space-y-2">
-                <div className="flex">
+                <div className="flex w-full max-w-lg mx-auto rounded-full overflow-hidden border border-gray-300 bg-white focus-within:ring-2 focus-within:ring-blue-500 transition-all duration-300">
                   <input
                     type="email"
                     placeholder="Enter your email"
-                    className={`flex-1 px-4 py-3 ${
-                      theme === 'dark' 
-                        ? 'bg-gray-800 border-gray-700 text-gray-200' 
-                        : 'bg-white border-gray-300 text-gray-800'
-                      } border rounded-l-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm transition-all duration-300`}
+                    className={`flex-1 min-w-0 px-3 py-2 text-sm bg-transparent border-none focus:outline-none focus:ring-0 text-gray-800`}
                   />
                   <button
                     type="submit"
-                    className="px-5 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-r-full hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 text-sm font-medium hover:scale-105 transform"
+                    className="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium text-sm focus:outline-none transition-all duration-300 hover:from-blue-700 hover:to-indigo-700"
+                    style={{ borderRadius: 0 }}
                   >
                     Subscribe
                   </button>

@@ -42,7 +42,7 @@ const RotatingText = () => {
       <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mt-2">
         in <span className={`bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-blue-600 transition-opacity duration-500 ${fadeLoc ? 'opacity-100' : 'opacity-0'}`}>{locations[locationIndex]}</span>
       </h1>
-      <p className="mt-8 text-lg text-gray-600 dark:text-gray-300 max-w-2xl">
+      <p className="mt-8 text-lg text-gray-600 max-w-2xl">
         Our AI-powered platform helps you discover and connect with the perfect influencers for your brand, anywhere in India.
       </p>
     </div>

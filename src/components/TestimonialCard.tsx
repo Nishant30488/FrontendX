@@ -21,7 +21,7 @@ export default function TestimonialCard({ quote, author, role, avatar, delay = 0
       <div className="mb-4">
         {/* Quote symbol */}
         <svg
-          className="h-8 w-8 text-primary-400 dark:text-primary-600/50 mb-2"
+          className="h-8 w-8 text-primary-400 mb-2"
           fill="currentColor"
           viewBox="0 0 32 32"
           aria-hidden="true"
@@ -38,7 +38,7 @@ export default function TestimonialCard({ quote, author, role, avatar, delay = 0
         />
         <div>
           <h4 className="text-sm font-semibold text-foreground">{author}</h4>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{role}</p>
+          <p className="text-xs text-gray-500">{role}</p>
         </div>
       </div>
     </motion.div>

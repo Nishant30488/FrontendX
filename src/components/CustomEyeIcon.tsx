@@ -1,87 +1,33 @@
 import React from 'react';
 
 interface CustomEyeIconProps {
-  isOpen: boolean;
-  isDarkTheme: boolean;
+  show: boolean;
   className?: string;
 }
 
-const CustomEyeIcon: React.FC<CustomEyeIconProps> = ({ isOpen, isDarkTheme, className = 'h-5 w-5' }) => {
-  const baseColor = isDarkTheme ? 'text-gray-300' : 'text-gray-700';
-  const activeColor = isDarkTheme ? 'text-primary-400' : 'text-primary-600';
-  const color = isOpen ? activeColor : baseColor;
-
-  if (isOpen) {
-    // Open eye with rays - visible password
-    return (
-      <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        viewBox="0 0 24 24" 
-        className={`${className} ${color} transition-all duration-300`}
-        aria-hidden="true"
-      >
-        {/* Eyelashes/Rays */}
-        <path 
-          stroke="currentColor" 
-          strokeWidth="1.5" 
-          strokeLinecap="round" 
-          d="M12 4.5V2.5M17.5 6.5L19 5M20.5 12H22.5M19 19L17.5 17.5M12 19.5V21.5M5 19L6.5 17.5M1.5 12H3.5M5 5L6.5 6.5" 
+export default function CustomEyeIcon({ show, className = '' }: CustomEyeIconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className={`h-5 w-5 text-gray-400 hover:text-gray-500 ${className}`}
+    >
+      {show ? (
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
         />
-        
-        {/* Eye outline */}
-        <path 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="1.5" 
-          d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" 
+      ) : (
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"
         />
-        
-        {/* Iris */}
-        <circle 
-          cx="12" 
-          cy="12" 
-          r="4" 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="1.5" 
-        />
-        
-        {/* Pupil */}
-        <circle 
-          cx="12" 
-          cy="12" 
-          r="2" 
-          fill="currentColor" 
-        />
-      </svg>
-    );
-  } else {
-    // Closed eye - hidden password
-    return (
-      <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        viewBox="0 0 24 24" 
-        className={`${className} ${color} transition-all duration-300`}
-        aria-hidden="true"
-      >
-        {/* Closed eye with slash */}
-        <path 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="1.5" 
-          strokeLinecap="round" 
-          d="M3 3l18 18M10.5 10.677a2 2 0 002.823 2.823" 
-        />
-        
-        <path 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="1.5" 
-          d="M7.362 7.561C5.68 8.74 4.279 10.42 3 12c1.889 2.991 5.282 6 9 6 1.55 0 3.043-.523 4.395-1.35M12 6c4.008 0 6.701 3.158 9 6a15.66 15.66 0 01-1.078 1.5" 
-        />
-      </svg>
-    );
-  }
-};
-
-export default CustomEyeIcon; 
+      )}
+    </svg>
+  );
+} 

@@ -17,7 +17,6 @@ import {
   MagnifyingGlassIcon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../contexts/AuthContext';
-import { useTheme } from '../contexts/ThemeContext';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -25,7 +24,6 @@ function classNames(...classes: string[]) {
 
 export default function Navbar() {
   const { user, logout } = useAuth();
-  const { theme, toggleTheme, isTransitioning } = useTheme();
   const [clickedFeature, setClickedFeature] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -51,12 +49,17 @@ export default function Navbar() {
     }
   };
 
+  const navigation = [
+    { name: 'Home', href: '/' },
+    { name: 'About', href: '/about' },
+    { name: 'Features', href: '/features' },
+    { name: 'Pricing', href: '/pricing' },
+    { name: 'Contact', href: '/contact' },
+  ];
+
   return (
     <div className="fixed w-full top-0 z-50">
-      <div className={`w-full mx-auto rounded-none ${theme === 'dark' 
-        ? 'bg-slate-800/95 shadow-md shadow-slate-900/20 border-b border-slate-700/50' 
-        : 'bg-white/95 shadow-md shadow-gray-200/50 border-b border-gray-100'} 
-        backdrop-blur-lg transition-all duration-300 ease-in-out hover:shadow-lg`}>
+      <div className={`w-full mx-auto rounded-none bg-white/95 shadow-md shadow-gray-200/50 border-b border-gray-100 backdrop-blur-lg transition-all duration-300 ease-in-out hover:shadow-lg`}>
         <Disclosure as="nav" className="relative">
       {({ open }) => (
         <>
@@ -73,20 +76,20 @@ export default function Navbar() {
               <div className="hidden md:block flex-1 max-w-md mx-8">
                 <form onSubmit={handleSearch} className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <MagnifyingGlassIcon className="h-4 w-4 text-gray-400 dark:text-gray-500" aria-hidden="true" />
+                    <MagnifyingGlassIcon className="h-4 w-4 text-gray-400" aria-hidden="true" />
                   </div>
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search influencers..."
-                    className="w-full pl-9 pr-3 py-1.5 bg-gray-100 dark:bg-slate-700/70 border border-transparent dark:border-slate-600/50 rounded-full text-sm text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent transition-all duration-200 hover:bg-gray-50 dark:hover:bg-slate-600/70"
+                    className="w-full pl-9 pr-3 py-1.5 bg-gray-100 border border-transparent rounded-full text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 hover:bg-gray-50 hover:shadow-md hover:scale-105"
                   />
                   {showSearchingMessage && (
-                    <div className="absolute mt-1 w-full rounded-lg bg-white dark:bg-slate-800 shadow-lg py-2 px-3 border border-gray-200 dark:border-gray-700 z-10">
+                    <div className="absolute mt-1 w-full rounded-lg bg-white shadow-lg py-2 px-3 border border-gray-200 z-10">
                       <div className="flex items-center space-x-2">
                         <SparklesIcon className="h-4 w-4 text-primary-500" aria-hidden="true" />
-                        <p className="text-sm text-gray-700 dark:text-gray-300">
+                        <p className="text-sm text-gray-700">
                           We are currently working on this feature. Thanks for your patience!
                         </p>
                       </div>
@@ -103,15 +106,15 @@ export default function Navbar() {
                     <>
                       <Popover.Button
                         className={classNames(
-                          open ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300',
-                            'group inline-flex items-center text-sm font-medium px-3 py-1.5 rounded-full hover:bg-gray-100/70 dark:hover:bg-slate-700/70 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-primary-500 hover:scale-105'
+                          open ? 'text-primary-600' : 'text-gray-700',
+                            'group inline-flex items-center text-sm font-medium px-3 py-1.5 rounded-full hover:bg-gray-100/70 hover:text-primary-600 transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-primary-500 hover:scale-105'
                         )}
                       >
                         <span>Features</span>
                         <ChevronDownIcon
                           className={classNames(
-                            open ? 'text-primary-600 dark:text-primary-400 rotate-180' : 'text-gray-500 dark:text-gray-400',
-                            'ml-1 h-4 w-4 transition-transform duration-200 group-hover:text-primary-600 dark:group-hover:text-primary-400'
+                            open ? 'text-primary-600 rotate-180' : 'text-gray-500',
+                            'ml-1 h-4 w-4 transition-transform duration-200 group-hover:text-primary-600'
                           )}
                           aria-hidden="true"
                         />
@@ -128,7 +131,7 @@ export default function Navbar() {
                         afterLeave={handleFeatureClose}
                       >
                           <Popover.Panel className="absolute left-1/2 z-10 mt-2 w-screen max-w-sm -translate-x-1/2 transform px-2 sm:px-0">
-                            <div className="overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5 dark:ring-white/10">
+                            <div className="overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5">
                               <div className="relative bg-card/95 backdrop-blur-sm p-3">
                               <div className="grid grid-cols-1 gap-2">
                                 
@@ -136,14 +139,14 @@ export default function Navbar() {
                                     {['AI-Powered Matching', 'Direct Message Communication', 'Secure Escrow Payments', 'Real-time Analytics', 'Fraud Detection'].map((feature) => (
                                   <div key={feature}>
                                     {clickedFeature === feature ? (
-                                        <div className="px-3 py-2 rounded-xl bg-white dark:bg-slate-800 shadow-sm border border-primary-200 dark:border-primary-800">
+                                        <div className="px-3 py-2 rounded-xl bg-white shadow-sm border border-primary-200">
                                         <div className="flex items-center space-x-3">
-                                            <div className="w-7 h-7 rounded-full bg-gradient-to-r from-primary-100 to-blue-100 dark:from-primary-900 dark:to-blue-900 flex items-center justify-center">
+                                            <div className="w-7 h-7 rounded-full bg-gradient-to-r from-primary-100 to-blue-100 flex items-center justify-center">
                                               <SparklesIcon className="h-3.5 w-3.5 text-primary-500" aria-hidden="true" />
                                           </div>
                                           <div className="flex-1">
-                                            <p className="text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-blue-600 dark:from-primary-400 dark:to-blue-400">Coming Soon</p>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400">Currently we are working on it. Thanks for your patience!</p>
+                                            <p className="text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-blue-600">Coming Soon</p>
+                                            <p className="text-xs text-gray-500">Currently we are working on it. Thanks for your patience!</p>
                                           </div>
                                         </div>
                                       </div>
@@ -154,13 +157,13 @@ export default function Navbar() {
                                           e.preventDefault();
                                           setClickedFeature(feature);
                                         }}
-                                          className="w-full text-left px-3 py-2 rounded-xl bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-sm hover:shadow transition-all duration-200 border border-gray-100 dark:border-gray-700 hover:scale-[1.02] group"
+                                          className="w-full text-left px-3 py-2 rounded-xl bg-white hover:bg-gray-50 shadow-sm hover:shadow transition-all duration-200 border border-gray-100 hover:scale-[1.02] group"
                                       >
                                         <div className="flex items-center space-x-2">
-                                          <div className="w-6 h-6 rounded-full bg-gradient-to-r from-primary-100 to-blue-100 dark:from-primary-900 dark:to-blue-900 flex items-center justify-center">
-                                            <SparklesIcon className="h-3 w-3 text-primary-600 dark:text-primary-400" aria-hidden="true" />
+                                          <div className="w-6 h-6 rounded-full bg-gradient-to-r from-primary-100 to-blue-100 flex items-center justify-center">
+                                            <SparklesIcon className="h-3 w-3 text-primary-600" aria-hidden="true" />
                                           </div>
-                                          <span className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-primary-600 group-hover:to-blue-600 dark:group-hover:from-primary-400 dark:group-hover:to-blue-400">{feature}</span>
+                                          <span className="text-sm font-medium text-gray-900 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-primary-600 group-hover:to-blue-600">{feature}</span>
                                         </div>
                                       </Popover.Button>
                                     )}
@@ -181,15 +184,15 @@ export default function Navbar() {
                     <>
                       <Popover.Button
                         className={classNames(
-                          open ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300',
-                            'group inline-flex items-center text-sm font-medium px-3 py-1.5 rounded-full hover:bg-gray-100/70 dark:hover:bg-slate-700/70 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-primary-500 hover:scale-105'
+                          open ? 'text-primary-600' : 'text-gray-700',
+                            'group inline-flex items-center text-sm font-medium px-3 py-1.5 rounded-full hover:bg-gray-100/70 hover:text-primary-600 transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-primary-500 hover:scale-105'
                         )}
                       >
                         <span>Resources</span>
                         <ChevronDownIcon
                           className={classNames(
-                            open ? 'text-primary-600 dark:text-primary-400 rotate-180' : 'text-gray-500 dark:text-gray-400',
-                            'ml-1 h-4 w-4 transition-transform duration-200 group-hover:text-primary-600 dark:group-hover:text-primary-400'
+                            open ? 'text-primary-600 rotate-180' : 'text-gray-500',
+                            'ml-1 h-4 w-4 transition-transform duration-200 group-hover:text-primary-600'
                           )}
                           aria-hidden="true"
                         />
@@ -205,13 +208,13 @@ export default function Navbar() {
                         leaveTo="opacity-0 translate-y-1"
                       >
                           <Popover.Panel className="absolute left-1/2 z-10 mt-2 w-screen max-w-xs -translate-x-1/2 transform px-2 sm:px-0">
-                            <div className="overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5 dark:ring-white/10">
+                            <div className="overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5">
                               <div className="relative bg-card/95 backdrop-blur-sm px-4 py-5">
-                                <div className="flex items-center justify-center p-4 text-center border border-primary-200/30 dark:border-primary-800/30 rounded-xl bg-gradient-to-r from-primary-50/30 to-blue-50/30 dark:from-primary-900/30 dark:to-blue-900/30">
+                                <div className="flex items-center justify-center p-4 text-center border border-primary-200/30 rounded-xl bg-gradient-to-r from-primary-50/30 to-blue-50/30">
                                 <div className="space-y-2">
                                     <SparklesIcon className="h-5 w-5 text-primary-500 mx-auto" />
-                                  <h3 className="text-sm font-medium text-primary-600 dark:text-primary-400">Coming Soon</h3>
-                                  <p className="text-xs text-gray-500 dark:text-gray-400">Currently we are working on it. Thanks for your patience!</p>
+                                  <h3 className="text-sm font-medium text-primary-600">Coming Soon</h3>
+                                  <p className="text-xs text-gray-500">Currently we are working on it. Thanks for your patience!</p>
                                 </div>
                               </div>
                             </div>
@@ -225,45 +228,16 @@ export default function Navbar() {
                 {/* About Us link */}
                 <Link
                   to="/about"
-                    className="text-sm font-medium text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full hover:bg-gray-100/70 dark:hover:bg-slate-700/70 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200 hover:scale-105"
+                    className="text-sm font-medium text-gray-700 px-3 py-1.5 rounded-full hover:bg-gray-100/70 hover:text-primary-600 transition-all duration-200 hover:scale-105"
                 >
                   About Us
                 </Link>
 
-                {/* Theme toggle button */}
-                <button
-                  type="button"
-                  onClick={toggleTheme}
-                  disabled={isTransitioning}
-                  className={`relative rounded-full w-12 h-5 p-0.5 transition-colors duration-300 focus:outline-none ${
-                    theme === 'dark' ? 'bg-primary-600' : 'bg-gray-200'
-                  } ${isTransitioning ? 'opacity-70 cursor-not-allowed' : ''} hover:shadow-md hover:scale-105`}
-                  aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-                >
-                  <span className="sr-only">
-                    {theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-                  </span>
-                  <span 
-                    className={`absolute top-0.5 transform transition-transform duration-300 ease-in-out bg-white rounded-full flex items-center justify-center w-4 h-4 shadow-sm ${
-                        theme === 'dark' ? 'translate-x-6.5' : 'translate-x-0.5'
-                    }`}
-                  >
-                   {theme === 'dark' ? (
-                      <MoonIcon className="h-2.5 w-2.5 text-primary-600" aria-hidden="true" />
-                   ) : (
-                      <SunIcon className="h-2.5 w-2.5 text-amber-500" aria-hidden="true" />
-                    )}
-                  </span>
-                  {isTransitioning && (
-                    <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-primary-500 animate-pulse"></span>
-                   )}
-                </button>
-
-                {/* Question mark button for Privacy Policy */}
+                {/* Desktop Question mark button for Policies */}
                 <Link
-                  to="/privacy-policy"
-                    className="relative rounded-full w-7 h-7 flex items-center justify-center bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/40 dark:to-pink-900/40 text-purple-600 dark:text-pink-400 hover:from-purple-200 hover:to-pink-200 dark:hover:from-purple-800/60 dark:hover:to-pink-800/60 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-110 focus:outline-none"
-                  aria-label="Privacy Policy"
+                  to="/policies"
+                  className="relative rounded-full w-7 h-7 flex items-center justify-center bg-gradient-to-r from-purple-100 to-pink-100 text-purple-600 hover:from-purple-200 hover:to-pink-200 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-110 focus:outline-none"
+                  aria-label="Policies"
                 >
                     <QuestionMarkCircleIcon className="h-4 w-4" aria-hidden="true" />
                 </Link>
@@ -295,8 +269,8 @@ export default function Navbar() {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                        <Menu.Items className="absolute right-0 z-10 mt-2 w-72 origin-top-right rounded-2xl bg-card py-1 shadow-xl ring-1 ring-black/5 dark:ring-white/10 focus:outline-none">
-                        <div className="px-4 py-4 border-b border-gray-200 dark:border-gray-700">
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-72 origin-top-right rounded-2xl bg-card py-1 shadow-xl ring-1 ring-black/5 focus:outline-none">
+                        <div className="px-4 py-4 border-b border-gray-200">
                           <div className="flex items-center">
                             {user.avatar ? (
                               <img
@@ -313,7 +287,7 @@ export default function Navbar() {
                               <p className="text-base font-semibold text-foreground">
                                 {user.name || 'User'}
                               </p>
-                              <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                              <div className="flex items-center text-sm text-gray-500">
                                 <EnvelopeIcon className="mr-1 h-3.5 w-3.5" />
                                 {user.email || 'user@example.com'}
                               </div>
@@ -321,13 +295,13 @@ export default function Navbar() {
                           </div>
                           
                           <div className="mt-3 grid grid-cols-2 gap-2">
-                              <div className="text-xs flex flex-col items-center justify-center rounded-xl bg-gray-100 dark:bg-slate-800 p-2">
-                              <span className="text-gray-500 dark:text-gray-400">Role</span>
+                              <div className="text-xs flex flex-col items-center justify-center rounded-xl bg-gray-100 p-2">
+                              <span className="text-gray-500">Role</span>
                               <span className="font-medium text-foreground">{user.role || 'Member'}</span>
                             </div>
-                              <div className="text-xs flex flex-col items-center justify-center rounded-xl bg-gray-100 dark:bg-slate-800 p-2">
-                              <span className="text-gray-500 dark:text-gray-400">Status</span>
-                              <span className="font-medium text-green-600 dark:text-green-400">Active</span>
+                              <div className="text-xs flex flex-col items-center justify-center rounded-xl bg-gray-100 p-2">
+                              <span className="text-gray-500">Status</span>
+                              <span className="font-medium text-green-600">Active</span>
                             </div>
                           </div>
                         </div>
@@ -337,11 +311,11 @@ export default function Navbar() {
                             <Link
                               to="/profile"
                               className={classNames(
-                                active ? 'bg-gray-100 dark:bg-slate-700 text-primary-600 dark:text-primary-400' : 'text-foreground',
+                                active ? 'bg-gray-100 text-primary-600' : 'text-foreground',
                                 'flex px-4 py-3 text-sm transition-colors duration-150 hover:scale-[1.02] transform'
                               )}
                             >
-                              <UserIcon className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+                              <UserIcon className="mr-3 h-5 w-5 text-gray-500" aria-hidden="true" />
                               <span>Your Profile</span>
                             </Link>
                           )}
@@ -350,7 +324,7 @@ export default function Navbar() {
                           {({ active }) => (
                             <Link
                               to="/settings"
-                              className="flex items-center px-3 py-1.5 rounded-full text-base font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 hover:scale-[1.02] transition-all duration-200"
+                              className="flex items-center px-3 py-1.5 rounded-full text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-primary-600 hover:scale-[1.02] transition-all duration-200"
                             >
                               <AdjustmentsHorizontalIcon className="mr-3 h-5 w-5" aria-hidden="true" />
                               <span>Settings</span>
@@ -362,11 +336,11 @@ export default function Navbar() {
                             <button
                               onClick={logout}
                               className={classNames(
-                                active ? 'bg-gray-100 dark:bg-slate-700 text-primary-600 dark:text-primary-400' : 'text-foreground',
+                                active ? 'bg-gray-100 text-primary-600' : 'text-foreground',
                                 'flex w-full px-4 py-3 text-sm text-left transition-colors duration-150 hover:scale-[1.02] transform'
                               )}
                             >
-                              <ArrowRightOnRectangleIcon className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+                              <ArrowRightOnRectangleIcon className="mr-3 h-5 w-5 text-gray-500" aria-hidden="true" />
                               <span>Sign out</span>
                             </button>
                           )}
@@ -378,7 +352,7 @@ export default function Navbar() {
                     <div className="flex space-x-2 ml-2">
                     <Link
                       to="/login"
-                        className="text-sm font-medium text-gray-700 dark:text-gray-300 px-3.5 py-1.5 rounded-full border border-gray-300/80 dark:border-gray-600/80 hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 hover:border-primary-500 dark:hover:border-primary-400 transition-all duration-200 hover:scale-105"
+                        className="text-sm font-medium text-gray-700 px-3.5 py-1.5 rounded-full border border-gray-300/80 hover:bg-gray-50 hover:text-primary-600 hover:border-primary-500 transition-all duration-200 hover:scale-105"
                     >
                       Log in
                     </Link>
@@ -403,60 +377,31 @@ export default function Navbar() {
                       setShowSearchingMessage(false);
                     }, 3000);
                   }}
-                  className="rounded-full p-1.5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 focus:outline-none focus:ring-1 focus:ring-primary-500 hover:scale-110 transition-transform duration-200"
+                  className="rounded-full p-1.5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-primary-500 hover:scale-110 transition-transform duration-200"
                 >
                   <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />
                 </button>
                 {showSearchingMessage && (
-                  <div className="absolute mt-10 right-12 w-64 rounded-lg bg-white dark:bg-slate-800 shadow-lg py-2 px-3 border border-gray-200 dark:border-gray-700 z-50">
+                  <div className="absolute mt-10 right-12 w-64 rounded-lg bg-white shadow-lg py-2 px-3 border border-gray-200 z-50">
                     <div className="flex items-center space-x-2">
                       <SparklesIcon className="h-4 w-4 text-primary-500" aria-hidden="true" />
-                      <p className="text-sm text-gray-700 dark:text-gray-300">
+                      <p className="text-sm text-gray-700">
                         We are currently working on this feature. Thanks for your patience!
                       </p>
                     </div>
                   </div>
                 )}
                 
-                {/* Theme toggle button */}
-                <button
-                  type="button"
-                  onClick={toggleTheme}
-                  disabled={isTransitioning}
-                  className={`relative rounded-full w-12 h-5 p-0.5 transition-colors duration-300 focus:outline-none ${
-                    theme === 'dark' ? 'bg-primary-600' : 'bg-gray-200'
-                  } ${isTransitioning ? 'opacity-70 cursor-not-allowed' : ''} hover:shadow-md hover:scale-105`}
-                  aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-                >
-                  <span className="sr-only">
-                    {theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-                  </span>
-                  <span 
-                    className={`absolute top-0.5 transform transition-transform duration-300 ease-in-out bg-white rounded-full flex items-center justify-center w-4 h-4 shadow-sm ${
-                        theme === 'dark' ? 'translate-x-6.5' : 'translate-x-0.5'
-                    }`}
-                  >
-                   {theme === 'dark' ? (
-                      <MoonIcon className="h-2.5 w-2.5 text-primary-600" aria-hidden="true" />
-                   ) : (
-                      <SunIcon className="h-2.5 w-2.5 text-amber-500" aria-hidden="true" />
-                    )}
-                  </span>
-                  {isTransitioning && (
-                    <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-primary-500 animate-pulse"></span>
-                   )}
-                </button>
-                
                 {/* Mobile Question mark button */}
                 <Link
-                  to="/privacy-policy"
-                    className="relative rounded-full w-7 h-7 flex items-center justify-center bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/40 dark:to-pink-900/40 text-purple-600 dark:text-pink-400 hover:from-purple-200 hover:to-pink-200 dark:hover:from-purple-800/60 dark:hover:to-pink-800/60 shadow-sm transition-all duration-300 hover:scale-105 focus:outline-none"
-                  aria-label="Privacy Policy"
+                  to="/policies"
+                  className="relative rounded-full w-7 h-7 flex items-center justify-center bg-gradient-to-r from-purple-100 to-pink-100 text-purple-600 hover:from-purple-200 hover:to-pink-200 shadow-sm transition-all duration-300 hover:scale-105 focus:outline-none"
+                  aria-label="Policies"
                 >
                     <QuestionMarkCircleIcon className="h-4 w-4" aria-hidden="true" />
                 </Link>
                 
-                  <Disclosure.Button className="inline-flex items-center justify-center rounded-full p-1.5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-white focus:outline-none focus:ring-1 focus:ring-inset focus:ring-primary-500 hover:scale-110 transition-transform duration-200">
+                  <Disclosure.Button className="inline-flex items-center justify-center rounded-full p-1.5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-inset focus:ring-primary-500 hover:scale-110 transition-transform duration-200">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
                       <XMarkIcon className="block h-5 w-5" aria-hidden="true" />
@@ -470,14 +415,14 @@ export default function Navbar() {
 
           <Disclosure.Panel className="md:hidden">
             {/* Mobile navigation links */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-3 pb-2 px-4">
+              <div className="border-t border-gray-200 pt-3 pb-2 px-4">
                 <div className="space-y-1">
                 <Disclosure.Button
                   as="div"
-                    className="flex justify-between items-center px-3 py-1.5 rounded-full text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200"
+                    className="flex justify-between items-center px-3 py-1.5 rounded-full text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-primary-600 transition-all duration-200"
                 >
                   <span>Features</span>
-                  <ChevronDownIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+                  <ChevronDownIcon className="h-5 w-5 text-gray-500" aria-hidden="true" />
                 </Disclosure.Button>
                   <div className="ml-4 px-2 py-2">
                     <div className="space-y-1.5 mb-2">
@@ -485,14 +430,14 @@ export default function Navbar() {
                         {['AI-Powered Matching', 'Direct Message Communication', 'Secure Escrow Payments', 'Real-time Analytics', 'Fraud Detection'].map((feature) => (
                       <div key={feature}>
                         {clickedFeature === feature ? (
-                            <div className="px-3 py-2 rounded-xl bg-white dark:bg-slate-800 shadow-sm border border-primary-200 dark:border-primary-800">
+                            <div className="px-3 py-2 rounded-xl bg-white shadow-sm border border-primary-200">
                             <div className="flex items-center space-x-2">
-                                <div className="w-5 h-5 rounded-full bg-gradient-to-r from-primary-100 to-blue-100 dark:from-primary-900 dark:to-blue-900 flex items-center justify-center">
+                                <div className="w-5 h-5 rounded-full bg-gradient-to-r from-primary-100 to-blue-100 flex items-center justify-center">
                                   <SparklesIcon className="h-2.5 w-2.5 text-primary-500" aria-hidden="true" />
                               </div>
                               <div className="flex-1">
-                                <p className="text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-blue-600 dark:from-primary-400 dark:to-blue-400">Coming Soon</p>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">Currently we are working on it. Thanks for your patience!</p>
+                                <p className="text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-blue-600">Coming Soon</p>
+                                <p className="text-xs text-gray-500">Currently we are working on it. Thanks for your patience!</p>
                               </div>
                             </div>
                           </div>
@@ -500,13 +445,13 @@ export default function Navbar() {
                           <button
                             key={feature}
                             onClick={() => setClickedFeature(feature)}
-                              className="w-full text-left px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-sm transition-all duration-200 border border-gray-100 dark:border-gray-700 hover:scale-[1.01] group"
+                              className="w-full text-left px-3 py-1.5 rounded-xl bg-white hover:bg-gray-50 shadow-sm transition-all duration-200 border border-gray-100 hover:scale-[1.01] group"
                           >
                             <div className="flex items-center space-x-2">
-                              <div className="w-5 h-5 rounded-full bg-gradient-to-r from-primary-100 to-blue-100 dark:from-primary-900 dark:to-blue-900 flex items-center justify-center">
-                                  <SparklesIcon className="h-2.5 w-2.5 text-primary-600 dark:text-primary-400" aria-hidden="true" />
+                              <div className="w-5 h-5 rounded-full bg-gradient-to-r from-primary-100 to-blue-100 flex items-center justify-center">
+                                  <SparklesIcon className="h-2.5 w-2.5 text-primary-600" aria-hidden="true" />
                               </div>
-                              <span className="text-sm font-medium text-gray-900 dark:text-white">{feature}</span>
+                              <span className="text-sm font-medium text-gray-900">{feature}</span>
                             </div>
                           </button>
                         )}
@@ -517,24 +462,24 @@ export default function Navbar() {
 
                 <Disclosure.Button
                   as="div"
-                    className="flex justify-between items-center px-3 py-1.5 rounded-full text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200"
+                    className="flex justify-between items-center px-3 py-1.5 rounded-full text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-primary-600 transition-all duration-200"
                 >
                   <span>Resources</span>
-                  <ChevronDownIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+                  <ChevronDownIcon className="h-5 w-5 text-gray-500" aria-hidden="true" />
                 </Disclosure.Button>
                   <div className="ml-4 px-2 py-2">
-                  <div className="p-3 text-center border border-primary-200/30 dark:border-primary-800/30 rounded-xl bg-gradient-to-r from-primary-50/30 to-blue-50/30 dark:from-primary-900/30 dark:to-blue-900/30">
+                  <div className="p-3 text-center border border-primary-200/30 rounded-xl bg-gradient-to-r from-primary-50/30 to-blue-50/30">
                     <div className="space-y-1">
                         <SparklesIcon className="h-4 w-4 text-primary-500 mx-auto" />
-                      <h3 className="text-sm font-medium text-primary-600 dark:text-primary-400">Coming Soon</h3>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Currently we are working on it. Thanks for your patience!</p>
+                      <h3 className="text-sm font-medium text-primary-600">Coming Soon</h3>
+                      <p className="text-xs text-gray-500">Currently we are working on it. Thanks for your patience!</p>
                     </div>
                   </div>
                 </div>
 
                 <Link
                   to="/about"
-                    className="block px-3 py-1.5 rounded-full text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200"
+                    className="block px-3 py-1.5 rounded-full text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-primary-600 transition-all duration-200"
                 >
                   About Us
                 </Link>
@@ -543,7 +488,7 @@ export default function Navbar() {
 
             {/* Mobile user menu or login buttons */}
             {user ? (
-                <div className="border-t border-gray-200 dark:border-slate-700 pb-2 pt-3 px-4">
+                <div className="border-t border-gray-200 pb-2 pt-3 px-4">
                   <div className="flex items-center">
                   <div className="flex-shrink-0">
                     {user.avatar ? (
@@ -562,7 +507,7 @@ export default function Navbar() {
                     <div className="text-base font-medium text-foreground">
                       {user.name || 'User'}
                     </div>
-                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    <div className="text-sm font-medium text-gray-500">
                       {user.email || 'user@example.com'}
                     </div>
                   </div>
@@ -570,21 +515,21 @@ export default function Navbar() {
                   <div className="mt-3 space-y-1 px-2">
                   <Link
                     to="/profile"
-                      className="flex items-center px-3 py-1.5 rounded-full text-base font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-800 dark:hover:text-white hover:scale-[1.02] transition-all duration-200"
+                      className="flex items-center px-3 py-1.5 rounded-full text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 hover:scale-[1.02] transition-all duration-200"
                   >
                     <UserIcon className="mr-3 h-5 w-5" aria-hidden="true" />
                     Your Profile
                   </Link>
                   <Link
                     to="/settings"
-                      className="flex items-center px-3 py-1.5 rounded-full text-base font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 hover:scale-[1.02] transition-all duration-200"
+                      className="flex items-center px-3 py-1.5 rounded-full text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-primary-600 hover:scale-[1.02] transition-all duration-200"
                   >
                     <AdjustmentsHorizontalIcon className="mr-3 h-5 w-5" aria-hidden="true" />
                     Settings
                   </Link>
                   <button
                     onClick={logout}
-                      className="flex w-full items-center px-3 py-1.5 rounded-full text-left text-base font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-800 dark:hover:text-white hover:scale-[1.02] transition-all duration-200"
+                      className="flex w-full items-center px-3 py-1.5 rounded-full text-left text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 hover:scale-[1.02] transition-all duration-200"
                   >
                     <ArrowRightOnRectangleIcon className="mr-3 h-5 w-5" aria-hidden="true" />
                     Sign out
@@ -592,11 +537,11 @@ export default function Navbar() {
                 </div>
               </div>
             ) : (
-                <div className="border-t border-gray-200 dark:border-slate-700 pb-2 pt-3 px-4">
+                <div className="border-t border-gray-200 pb-2 pt-3 px-4">
                   <div className="flex flex-col space-y-2">
                   <Link
                     to="/login"
-                      className="w-full text-center px-3 py-1.5 text-base font-medium text-gray-700 dark:text-gray-300 border border-gray-300/80 dark:border-gray-600/80 rounded-full hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 hover:border-primary-500 dark:hover:border-primary-400 transition-all duration-200 hover:scale-105"
+                      className="w-full text-center px-3 py-1.5 text-base font-medium text-gray-700 border border-gray-300/80 rounded-full hover:bg-gray-50 hover:text-primary-600 hover:border-primary-500 transition-all duration-200 hover:scale-105"
                   >
                     Log in
                   </Link>

@@ -207,11 +207,11 @@ const ChatBot: React.FC = () => {
         border-radius: 3px;
       }
       .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: ${theme === 'dark' ? '#4B5563' : '#D1D5DB'};
+        background: ${theme === 'dark' ? '#4B5563' : '#FECDD3'};
         border-radius: 3px;
       }
       .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: ${theme === 'dark' ? '#6B7280' : '#9CA3AF'};
+        background: ${theme === 'dark' ? '#6B7280' : '#FDA4AF'};
       }
     `;
     document.head.appendChild(styleElement);
@@ -551,10 +551,10 @@ const ChatBot: React.FC = () => {
 
               {showSuccess && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-[1px] z-40">
-                  <div className={`bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg transform transition-all duration-300 scale-110 animate-pulse`}>
+                  <div className={`bg-white rounded-xl p-4 shadow-lg transform transition-all duration-300 scale-110 animate-pulse`}>
                     <div className="flex flex-col items-center">
                       <CheckCircleIcon className="h-10 w-10 text-green-500 mb-2" />
-                      <p className="text-center text-sm font-medium text-gray-800 dark:text-white">
+                      <p className="text-center text-sm font-medium text-gray-800">
                         Chat session ending...
                       </p>
                     </div>
